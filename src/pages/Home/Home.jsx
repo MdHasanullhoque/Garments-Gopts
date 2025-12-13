@@ -1,22 +1,9 @@
-// import React from 'react';
-// import HeroBanner from './HeroBanner';
-// import HomeProducts from './HomeProducts';
-
-// const Home = () => {
-//     return (
-//         <div>
-//             <h2>This is Home</h2>
-//             <HeroBanner />
-//             <HomeProducts />
-//         </div>
-//     );
-// };
-
-// export default Home;
 
 import React from 'react';
 import HeroBanner from './HeroBanner';
 import HomeProducts from './HomeProducts';
+import HowItWorks from './HowItWorks';
+import CustomerFeedback from './CustomerFeedback';
 
 const Home = () => {
     return (
@@ -38,6 +25,15 @@ const Home = () => {
                 </h3>
                 <HomeProducts />
             </section>
+
+            <div>
+                <HowItWorks />
+
+                <CustomerFeedback/>
+                
+            </div>
+
+          
         </div>
     );
 };
