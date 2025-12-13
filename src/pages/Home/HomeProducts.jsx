@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router';
 const HomeProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -35,9 +35,12 @@ const HomeProducts = () => {
                         <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
                         <p className="text-gray-600 text-sm mb-2">{product.shortDescription}</p>
                         <p className="font-semibold mb-1">Price: ${product.price}</p>
-                        <p className="text-gray-700 mb-3">Available: {product.availableQuantity}</p>
-                        <button className="mt-auto bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors">
-                            View Details
+                        {/* <p className="text-gray-700 mb-3">Available: {product.availableQuantity}</p> */}
+
+
+                        <button className="mt-auto bg-blue-500 text-white py-2 px-4 rounded
+                         hover:bg-blue-600 transition-colors">
+                            <Link to={`/product/${product._id}`}>View Details</Link>
                         </button>
                     </div>
                 ))}

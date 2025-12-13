@@ -3,11 +3,12 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import ProductDetails from "../pages/Home/ProductDetails";
 
 
 const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem("token");
-    if(!token) return window.location.href = "/login";
+    if (!token) return window.location.href = "/login";
     return children;
 }
 
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "login", element: <Login /> },
             { path: "register", element: <Register /> },
+            { path: "product/:id", element: <ProductDetails /> },
         ]
     }
 ]);
