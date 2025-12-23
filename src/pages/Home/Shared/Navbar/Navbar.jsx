@@ -46,9 +46,17 @@ const Navbar = () => {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1 space-x-4">
                     <li><Link to="/">Home</Link></li>
-                    <li><a>All Products</a></li>
+                    <li onClick={() => setMenuOpen(false)}><Link to="/all-products">All Products</Link></li>
                     <li><a>About Us</a></li>
                     <li><a>Contact</a></li>
+
+                    {/*  Dashboard only when logged in */}
+                    {user && (
+                        <li>
+                            <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                    )}
+
                 </ul>
             </div>
 
@@ -73,9 +81,19 @@ const Navbar = () => {
                     <div className="absolute top-full left-0 w-full bg-white shadow-md z-40">
                         <ul className="flex flex-col p-4 space-y-2">
                             <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
-                            <li><a onClick={() => setMenuOpen(false)}>All Products</a></li>
+                            <li onClick={() => setMenuOpen(false)}><Link to="/all-products">All Products</Link></li>
                             <li><a onClick={() => setMenuOpen(false)}>About Us</a></li>
                             <li><a onClick={() => setMenuOpen(false)}>Contact</a></li>
+
+
+
+                            {/*  Dashboard only when logged in */}
+                            {user && (
+                                <li>
+                                    <Link to="/dashboard">Dashboard</Link>
+                                </li>
+                            )}
+
                         </ul>
                     </div>
                 )}
@@ -95,7 +113,11 @@ const Navbar = () => {
                             <div className="absolute right-0 mt-2 p-3 bg-white shadow-md rounded w-44 z-50">
                                 <p className="text-sm font-medium">{user.displayName}</p>
                                 <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                                <Link to="/dashboard" className="block mt-2 text-blue-500 hover:underline">Dashboard</Link>
+                                {/* <Link to="/dashboard" className="block mt-2 text-blue-500 hover:underline">Dashboard</Link> */}
+                                {/* <Link to="" className="block mt-2 text-blue-500 hover:underline"></Link> */}
+
+                                {/* <DashboardLayout /> */}
+
                                 <button onClick={handleLogout} className="btn btn-sm mt-2 w-full">Logout</button>
                             </div>
                         )}

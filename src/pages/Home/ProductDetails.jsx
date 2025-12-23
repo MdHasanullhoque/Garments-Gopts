@@ -7,7 +7,12 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/product/${id}`)
+        fetch(`http://localhost:3000/products/${id}`)
+
+            //fetch(`http://localhost:3000/products/${id}`)
+
+            //http://localhost:3000/product/${id}
+
             .then(res => res.json())
             .then(data => {
                 setProduct(data);
@@ -34,6 +39,13 @@ const ProductDetails = () => {
             <p className="mb-2">{product.shortDescription}</p>
             <p className="mb-2"><strong>Price:</strong> ${product.price}</p>
             <p className="mb-2"><strong>Available Quantity:</strong> {product.availableQuantity}</p>
+
+
+            {/* start from here */}
+            <button className="btn btn-primary mt-5" disabled>
+                Order / Booking (Coming Soon)
+            </button>
+
         </div>
     );
 };

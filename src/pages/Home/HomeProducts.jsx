@@ -40,7 +40,16 @@ const HomeProducts = () => {
 
                         <button className="mt-auto bg-blue-500 text-white py-2 px-4 rounded
                          hover:bg-blue-600 transition-colors">
-                            <Link to={`/product/${product._id}`}>View Details</Link>
+
+
+
+                            {/* <Link to={`/product/${product._id}`}>View Details</Link> */}
+
+                            <Link to={`/products/${product._id}`}>View Details</Link>
+
+
+
+
                         </button>
                     </div>
                 ))}
