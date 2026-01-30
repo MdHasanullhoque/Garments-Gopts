@@ -30,6 +30,8 @@ export const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "login", element: <Login /> },
             { path: "register", element: <Register /> },
+            //30-01-02026
+            { path: "products", element: <Navigate to="/all-products" /> }, // <-- add this
             { path: "products/:id", element: <ProductDetails /> },
             { path: "all-products", element: <AllProducts /> },
             {
