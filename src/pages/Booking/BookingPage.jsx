@@ -1,12 +1,13 @@
 
 
+
 // // BookingPage.jsx
 // import React, { useEffect, useState, useContext } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { AuthContext } from "../../context/AuthProvider";
 
 // const BookingPage = () => {
-//     const { user, setUser } = useContext(AuthContext); // context + setUser
+//     const { user, setUser } = useContext(AuthContext);
 //     const { id } = useParams();
 //     const navigate = useNavigate();
 
@@ -21,53 +22,54 @@
 //     const [address, setAddress] = useState("");
 //     const [additionalNotes, setAdditionalNotes] = useState("");
 
-//     // ================= Fetch latest user info =================
+//     // ================= Fetch latest user from backend =================
 //     useEffect(() => {
-//         if (!user?.uid) return;
+//         if (!user?.uid || !user?.email) return;
 
-//         fetch(`http://localhost:3000/users/uid/${user.uid}`)
-//             .then((res) => res.json())
-//             .then((data) => {
-//                 setUser(data); // update context with latest info
-//                 console.log("Updated user from backend:", data);
+//         fetch(
+//             `http://localhost:3000/users/uid/${user.uid}?email=${user.email}`
+//         )
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (!data.message) {
+//                     setUser(data); // update context
+//                 }
+//                 console.log("User from backend:", data);
 //             })
-//             .catch((err) => console.error("Failed to fetch user:", err));
-//     }, [user?.uid, setUser]);
+//             .catch(err => console.error(err));
+//     }, [user?.uid, user?.email, setUser]);
 
-//     // ================= Fetch product details =================
+//     // ================= Fetch product =================
 //     useEffect(() => {
 //         if (!id) return;
 
 //         fetch(`http://localhost:3000/products/${id}`)
-//             .then((res) => res.json())
-//             .then((data) => setProduct(data))
-//             .catch((err) => console.error(err));
+//             .then(res => res.json())
+//             .then(data => setProduct(data))
+//             .catch(err => console.error(err));
 //     }, [id]);
 
-//     // ================= Loading States =================
+//     // ================= Loading =================
 //     if (!user || !user.status) return <p>Loading user info...</p>;
-//     if (!product) return <p>Loading product info...</p>;
+//     if (!product) return <p>Loading product...</p>;
 
-//     // ================= Suspended Buyer Check =================
+//     // ================= Suspended buyer block =================
 //     if (user.status === "suspended" && user.role === "buyer") {
 //         return (
 //             <div className="max-w-3xl mx-auto p-6 bg-red-100 rounded">
 //                 <h2 className="text-2xl font-bold text-red-600 mb-2">
-//                     You are suspended! ❌
+//                     You are suspended ❌
 //                 </h2>
-//                 <p>
-//                     <strong>Reason:</strong> {user.suspendReason || "No reason provided"}
-//                 </p>
-//                 <p>
-//                     <strong>Feedback:</strong> {user.suspendFeedback || "No feedback"}
-//                 </p>
+//                 <p><strong>Reason:</strong> {user.suspendReason || "N/A"}</p>
+//                 <p><strong>Feedback:</strong> {user.suspendFeedback || "N/A"}</p>
 //             </div>
 //         );
 //     }
 
-//     // ================= Handle quantity =================
+//     // ================= Quantity handler =================
 //     const handleQuantity = (e) => {
 //         const value = Number(e.target.value);
+
 //         if (value < product.minimumOrder) {
 //             setError(`Minimum order is ${product.minimumOrder}`);
 //             return;
@@ -76,22 +78,22 @@
 //             setError("Quantity exceeds available stock");
 //             return;
 //         }
+
 //         setError("");
 //         setQuantity(value);
 //     };
 
 //     const totalPrice = quantity * product.price;
 
-//     // ================= Handle form submit =================
+//     // ================= Submit order =================
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
-//         if (!quantity || error) return;
+//         if (error) return;
 
-//         // Safety check: prevent suspended buyer from submitting
-//         if (user.status === "suspended" && user.role === "buyer") {
-//             alert("You are suspended and cannot place a new order!");
-//             return;
-//         }
+//         // if (user.status === "suspended") {
+//         //     alert("You are suspended baler@@@bal!"); //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//         //     return;
+//         // }
 
 //         const orderData = {
 //             productId: id,
@@ -119,20 +121,19 @@
 //                 alert("Booking successful!");
 //                 navigate("/dashboard/my-orders");
 //             } else {
-//                 const data = await res.json();
-//                 alert("Booking failed: " + data.message);
+//                 alert("Booking failed");
 //             }
 //         } catch (err) {
 //             console.error(err);
-//             alert("Something went wrong!");
 //         }
 //     };
 
-//     // ================= Render Booking Form =================
+//     // ================= UI =================
 //     return (
 //         <div className="max-w-3xl mx-auto p-6">
 //             <h2 className="text-2xl font-bold mb-4">Booking Form</h2>
-//             <form className="space-y-4" onSubmit={handleSubmit}>
+
+//             <form onSubmit={handleSubmit} className="space-y-4">
 //                 <input value={user.email} readOnly className="input input-bordered w-full" />
 //                 <input value={product.name} readOnly className="input input-bordered w-full" />
 //                 <input value={product.price} readOnly className="input input-bordered w-full" />
@@ -147,40 +148,22 @@
 
 //                 <input value={totalPrice} readOnly className="input input-bordered w-full" />
 
-//                 <input
-//                     placeholder="First Name"
-//                     className="input input-bordered w-full"
-//                     value={firstName}
-//                     onChange={(e) => setFirstName(e.target.value)}
-//                     required
-//                 />
-//                 <input
-//                     placeholder="Last Name"
-//                     className="input input-bordered w-full"
-//                     value={lastName}
-//                     onChange={(e) => setLastName(e.target.value)}
-//                     required
-//                 />
-//                 <input
-//                     placeholder="Contact Number"
-//                     className="input input-bordered w-full"
-//                     value={contactNumber}
-//                     onChange={(e) => setContactNumber(e.target.value)}
-//                     required
-//                 />
-//                 <textarea
-//                     placeholder="Delivery Address"
+//                 <input placeholder="First Name" required className="input input-bordered w-full"
+//                     value={firstName} onChange={e => setFirstName(e.target.value)} />
+
+//                 <input placeholder="Last Name" required className="input input-bordered w-full"
+//                     value={lastName} onChange={e => setLastName(e.target.value)} />
+
+//                 <input placeholder="Contact Number" required className="input input-bordered w-full"
+//                     value={contactNumber} onChange={e => setContactNumber(e.target.value)} />
+
+//                 <textarea placeholder="Delivery Address" required
 //                     className="textarea textarea-bordered w-full"
-//                     value={address}
-//                     onChange={(e) => setAddress(e.target.value)}
-//                     required
-//                 />
-//                 <textarea
-//                     placeholder="Additional Notes"
+//                     value={address} onChange={e => setAddress(e.target.value)} />
+
+//                 <textarea placeholder="Additional Notes"
 //                     className="textarea textarea-bordered w-full"
-//                     value={additionalNotes}
-//                     onChange={(e) => setAdditionalNotes(e.target.value)}
-//                 />
+//                     value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)} />
 
 //                 <button className="btn btn-primary w-full">Confirm Order</button>
 //             </form>
@@ -189,7 +172,6 @@
 // };
 
 // export default BookingPage;
-
 
 
 
@@ -218,15 +200,12 @@ const BookingPage = () => {
     useEffect(() => {
         if (!user?.uid || !user?.email) return;
 
-        fetch(
-            `http://localhost:3000/users/uid/${user.uid}?email=${user.email}`
-        )
+        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`)
             .then(res => res.json())
             .then(data => {
                 if (!data.message) {
-                    setUser(data); // update context
+                    setUser(data);
                 }
-                console.log("User from backend:", data);
             })
             .catch(err => console.error(err));
     }, [user?.uid, user?.email, setUser]);
@@ -244,19 +223,6 @@ const BookingPage = () => {
     // ================= Loading =================
     if (!user || !user.status) return <p>Loading user info...</p>;
     if (!product) return <p>Loading product...</p>;
-
-    // ================= Suspended buyer block =================
-    if (user.status === "suspended" && user.role === "buyer") {
-        return (
-            <div className="max-w-3xl mx-auto p-6 bg-red-100 rounded">
-                <h2 className="text-2xl font-bold text-red-600 mb-2">
-                    You are suspended ❌
-                </h2>
-                <p><strong>Reason:</strong> {user.suspendReason || "N/A"}</p>
-                <p><strong>Feedback:</strong> {user.suspendFeedback || "N/A"}</p>
-            </div>
-        );
-    }
 
     // ================= Quantity handler =================
     const handleQuantity = (e) => {
@@ -282,8 +248,9 @@ const BookingPage = () => {
         e.preventDefault();
         if (error) return;
 
-        if (user.status === "suspended") {
-            alert("You are suspended!");
+        // 🔒 Frontend hard block
+        if (user.status === "suspended" && user.role === "buyer") {
+            alert("You are suspended and cannot place an order!");
             return;
         }
 
@@ -309,14 +276,20 @@ const BookingPage = () => {
                 body: JSON.stringify(orderData),
             });
 
-            if (res.ok) {
-                alert("Booking successful!");
-                navigate("/dashboard/my-orders");
-            } else {
-                alert("Booking failed");
+            // 🔴 Backend response handle
+            if (!res.ok) {
+                const data = await res.json();
+                alert(data.message || "Booking failed");
+                return;
             }
+
+            // ✅ Success
+            alert("Booking successful!");
+            navigate("/dashboard/my-orders");
+
         } catch (err) {
             console.error(err);
+            alert("Something went wrong!");
         }
     };
 
@@ -326,9 +299,23 @@ const BookingPage = () => {
             <h2 className="text-2xl font-bold mb-4">Booking Form</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-                <input value={user.email} readOnly className="input input-bordered w-full" />
-                <input value={product.name} readOnly className="input input-bordered w-full" />
-                <input value={product.price} readOnly className="input input-bordered w-full" />
+                <input
+                    value={user.email}
+                    readOnly
+                    className="input input-bordered w-full"
+                />
+
+                <input
+                    value={product.name}
+                    readOnly
+                    className="input input-bordered w-full"
+                />
+
+                <input
+                    value={product.price}
+                    readOnly
+                    className="input input-bordered w-full"
+                />
 
                 <input
                     type="number"
@@ -338,26 +325,54 @@ const BookingPage = () => {
                 />
                 {error && <p className="text-red-500">{error}</p>}
 
-                <input value={totalPrice} readOnly className="input input-bordered w-full" />
+                <input
+                    value={totalPrice}
+                    readOnly
+                    className="input input-bordered w-full"
+                />
 
-                <input placeholder="First Name" required className="input input-bordered w-full"
-                    value={firstName} onChange={e => setFirstName(e.target.value)} />
+                <input
+                    placeholder="First Name"
+                    required
+                    className="input input-bordered w-full"
+                    value={firstName}
+                    onChange={e => setFirstName(e.target.value)}
+                />
 
-                <input placeholder="Last Name" required className="input input-bordered w-full"
-                    value={lastName} onChange={e => setLastName(e.target.value)} />
+                <input
+                    placeholder="Last Name"
+                    required
+                    className="input input-bordered w-full"
+                    value={lastName}
+                    onChange={e => setLastName(e.target.value)}
+                />
 
-                <input placeholder="Contact Number" required className="input input-bordered w-full"
-                    value={contactNumber} onChange={e => setContactNumber(e.target.value)} />
+                <input
+                    placeholder="Contact Number"
+                    required
+                    className="input input-bordered w-full"
+                    value={contactNumber}
+                    onChange={e => setContactNumber(e.target.value)}
+                />
 
-                <textarea placeholder="Delivery Address" required
+                <textarea
+                    placeholder="Delivery Address"
+                    required
                     className="textarea textarea-bordered w-full"
-                    value={address} onChange={e => setAddress(e.target.value)} />
+                    value={address}
+                    onChange={e => setAddress(e.target.value)}
+                />
 
-                <textarea placeholder="Additional Notes"
+                <textarea
+                    placeholder="Additional Notes"
                     className="textarea textarea-bordered w-full"
-                    value={additionalNotes} onChange={e => setAdditionalNotes(e.target.value)} />
+                    value={additionalNotes}
+                    onChange={e => setAdditionalNotes(e.target.value)}
+                />
 
-                <button className="btn btn-primary w-full">Confirm Order</button>
+                <button className="btn btn-primary w-full">
+                    Confirm Order
+                </button>
             </form>
         </div>
     );
