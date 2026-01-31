@@ -1,10 +1,10 @@
 
+
 // import React, { useState, useContext, useEffect } from "react";
 // import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-// import { auth, db } from "../../firebaseConfig";
+// import { auth } from "../../firebaseConfig"; // Firebase config path check করে নিতে হবে
 // import { useNavigate, Link } from "react-router-dom";
 // import { AuthContext } from "../../context/AuthProvider";
-// import { doc, setDoc, getDoc } from "firebase/firestore";
 
 // const Login = () => {
 //     const [error, setError] = useState("");
@@ -16,37 +16,47 @@
 //     }, [user, navigate]);
 
 //     // Email/Password login
-//     const handleLogin = (e) => {
+//     const handleLogin = async (e) => {
 //         e.preventDefault();
 //         const email = e.target.email.value;
 //         const password = e.target.password.value;
 
-//         signInWithEmailAndPassword(auth, email, password)
-//             .then(async (res) => {
-//                 const currentUser = {
-//                     uid: res.user.uid,
-//                     name: res.user.displayName || "Unknown",
-//                     email: res.user.email,
-//                     photoURL: res.user.photoURL || ""
-//                 };
+//         try {
+//             const res = await signInWithEmailAndPassword(auth, email, password);
+//             const currentUser = {
+//                 uid: res.user.uid,
+//                 name: res.user.displayName || "Unknown",
+//                 email: res.user.email,
+//                 photoURL: res.user.photoURL || "",
+//                 role: "buyer",
+//                 status: "pending"
+//             };
 
-//                 // Sync with backend
-//                 await fetch("http://localhost:3000/users/sync", {
-//                     method: "POST",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify(currentUser)
-//                 });
+//             // Sync with backend
+//             const syncRes = await fetch("http://localhost:3000/users/sync", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify(currentUser)
+//             });
 
-//                 setUser(currentUser);
-//                 navigate("/");
-//             })
-//             .catch(err => setError(err.message));
+//             if (!syncRes.ok) {
+//                 const errData = await syncRes.json();
+//                 throw new Error(errData.message || "User sync failed");
+//             }
+
+//             setUser(currentUser);
+//             navigate("/");
+
+//         } catch (err) {
+//             console.error("Login Error:", err.message);
+//             setError(err.message);
+//         }
 //     };
 
 //     // Google Login
 //     // const handleGoogleLogin = async () => {
+//     //     const provider = new GoogleAuthProvider();
 //     //     try {
-//     //         const provider = new GoogleAuthProvider();
 //     //         const result = await signInWithPopup(auth, provider);
 //     //         const gUser = result.user;
 
@@ -54,56 +64,65 @@
 //     //             uid: gUser.uid,
 //     //             name: gUser.displayName,
 //     //             email: gUser.email,
-//     //             photoURL: gUser.photoURL
+//     //             photoURL: gUser.photoURL,
+//     //             role: "buyer",
+//     //             status: "pending"
 //     //         };
 
-//     //         // Sync with backend
-//     //         await fetch("http://localhost:3000/users/sync", {
+//     //         // Backend sync
+//     //         const syncRes = await fetch("http://localhost:3000/users/sync", {
 //     //             method: "POST",
 //     //             headers: { "Content-Type": "application/json" },
 //     //             body: JSON.stringify(currentUser)
 //     //         });
 
+//     //         if (!syncRes.ok) {
+//     //             const errData = await syncRes.json();
+//     //             throw new Error(errData.message || "User sync failed");
+//     //         }
+
 //     //         setUser(currentUser);
 //     //         navigate("/");
+
 //     //     } catch (err) {
 //     //         console.error("Google Login Error:", err.message);
 //     //         setError(err.message);
 //     //     }
 //     // };
 
-//     // Google login handler
+
 //     const handleGoogleLogin = async () => {
 //         const provider = new GoogleAuthProvider();
 //         try {
 //             const result = await signInWithPopup(auth, provider);
 //             const gUser = result.user;
 
-//             // Backend sync
-//             await fetch("http://localhost:3000/users/sync", {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify({
-//                     name: gUser.displayName,
-//                     email: gUser.email,
-//                     photoURL: gUser.photoURL
-//                 })
-//             });
-
-//             setUser({
+//             const currentUser = {
 //                 uid: gUser.uid,
 //                 name: gUser.displayName,
 //                 email: gUser.email,
 //                 photoURL: gUser.photoURL,
 //                 role: "buyer",
 //                 status: "pending"
+//             };
+
+//             // Backend sync
+//             const res = await fetch("http://localhost:3000/users/sync", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify(currentUser)
 //             });
 
+//             if (!res.ok) throw new Error("User sync failed");
+
+//             setUser(currentUser);
 //             navigate("/");
 //         } catch (err) {
 //             console.error("Google Login Error:", err.message);
 //         }
 //     };
+
+
 //     return (
 //         <div className="flex justify-center p-10">
 //             <form onSubmit={handleLogin} className="card w-96 bg-base-100 shadow-xl p-5">
@@ -125,9 +144,12 @@
 // export default Login;
 
 
+
+//mnew 
+
 import React, { useState, useContext, useEffect } from "react";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebaseConfig"; // Firebase config path check করে নিতে হবে
+import { auth } from "../../firebaseConfig";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 
@@ -140,7 +162,7 @@ const Login = () => {
         if (user) navigate("/");
     }, [user, navigate]);
 
-    // Email/Password login
+    // =================== Email/Password login ===================
     const handleLogin = async (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -148,6 +170,7 @@ const Login = () => {
 
         try {
             const res = await signInWithEmailAndPassword(auth, email, password);
+
             const currentUser = {
                 uid: res.user.uid,
                 name: res.user.displayName || "Unknown",
@@ -157,17 +180,14 @@ const Login = () => {
                 status: "pending"
             };
 
-            // Sync with backend
+            // Sync to backend MongoDB
             const syncRes = await fetch("http://localhost:3000/users/sync", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(currentUser)
             });
 
-            if (!syncRes.ok) {
-                const errData = await syncRes.json();
-                throw new Error(errData.message || "User sync failed");
-            }
+            if (!syncRes.ok) throw new Error("User sync failed");
 
             setUser(currentUser);
             navigate("/");
@@ -178,44 +198,7 @@ const Login = () => {
         }
     };
 
-    // Google Login
-    // const handleGoogleLogin = async () => {
-    //     const provider = new GoogleAuthProvider();
-    //     try {
-    //         const result = await signInWithPopup(auth, provider);
-    //         const gUser = result.user;
-
-    //         const currentUser = {
-    //             uid: gUser.uid,
-    //             name: gUser.displayName,
-    //             email: gUser.email,
-    //             photoURL: gUser.photoURL,
-    //             role: "buyer",
-    //             status: "pending"
-    //         };
-
-    //         // Backend sync
-    //         const syncRes = await fetch("http://localhost:3000/users/sync", {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify(currentUser)
-    //         });
-
-    //         if (!syncRes.ok) {
-    //             const errData = await syncRes.json();
-    //             throw new Error(errData.message || "User sync failed");
-    //         }
-
-    //         setUser(currentUser);
-    //         navigate("/");
-
-    //     } catch (err) {
-    //         console.error("Google Login Error:", err.message);
-    //         setError(err.message);
-    //     }
-    // };
-
-
+    // =================== Google login ===================
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
         try {
@@ -231,22 +214,23 @@ const Login = () => {
                 status: "pending"
             };
 
-            // Backend sync
-            const res = await fetch("http://localhost:3000/users/sync", {
+            // Sync to backend MongoDB
+            const syncRes = await fetch("http://localhost:3000/users/sync", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(currentUser)
             });
 
-            if (!res.ok) throw new Error("User sync failed");
+            if (!syncRes.ok) throw new Error("User sync failed");
 
             setUser(currentUser);
             navigate("/");
+
         } catch (err) {
             console.error("Google Login Error:", err.message);
+            setError(err.message);
         }
     };
-
 
     return (
         <div className="flex justify-center p-10">
