@@ -1,87 +1,4 @@
 
-// //30-01-2026
-
-
-// import { useEffect, useState } from "react";
-
-// const ManageUsers = () => {
-//     const [users, setUsers] = useState([]);
-
-//     // Fetch all users
-//     const fetchUsers = async () => {
-//         const res = await fetch("http://localhost:3000/users");
-//         const data = await res.json();
-//         setUsers(data);
-//     };
-
-//     useEffect(() => {
-//         fetchUsers();
-//     }, []);
-
-//     // Update user role
-//     const handleUpdate = async (id, role) => {
-//         const newRole = prompt("Enter new role (admin/manager/buyer):", role);
-//         if (!newRole) return;
-
-//         await fetch(`http://localhost:3000/users/${id}`, {
-//             method: "PATCH",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ role: newRole }),
-//         });
-//         fetchUsers(); // refresh
-//     };
-
-//     // Suspend user
-//     const handleSuspend = async (id) => {
-//         if (!window.confirm("Are you sure to suspend this user?")) return;
-//         await fetch(`http://localhost:3000/users/${id}`, {
-//             method: "PATCH",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ status: "suspended" }),
-//         });
-//         fetchUsers(); // refresh
-//     };
-
-//     return (
-//         <div>
-//             <h2>Manage Users</h2>
-//             <table border="1" cellPadding="5" cellSpacing="0">
-//                 <thead>
-//                     <tr>
-//                         <th>Name</th>
-//                         <th>Email</th>
-//                         <th>Role</th>
-//                         <th>Status</th>
-//                         <th>Actions</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {users.map(u => (
-//                         <tr key={u._id}>
-//                             <td>{u.name}</td>
-//                             <td>{u.email}</td>
-//                             <td>{u.role}</td>
-//                             <td>{u.status || "active"}</td>
-//                             <td>
-//                                 <button onClick={() => handleUpdate(u._id, u.role)}>Update</button>
-//                                 <button onClick={() => handleSuspend(u._id)}>Suspend</button>
-//                             </td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-//         </div>
-//     );
-// };
-
-// export default ManageUsers;
-
-
-
-
-
-
-//new 2 
 
 
 // import { useEffect, useState } from "react";
@@ -92,6 +9,12 @@
 //     const [selectedUser, setSelectedUser] = useState(null);
 //     const [newRole, setNewRole] = useState("");
 //     const [suspendId, setSuspendId] = useState(null);
+
+//     // ================== Step 2 ==================
+//     // Suspend modal input fields
+//     const [suspendReason, setSuspendReason] = useState(""); // reason input
+//     const [suspendFeedback, setSuspendFeedback] = useState(""); // feedback textarea
+//     // ===========================================
 
 //     const fetchUsers = async () => {
 //         const res = await fetch("http://localhost:3000/users");
@@ -116,24 +39,34 @@
 //             body: JSON.stringify({ role: newRole }),
 //         });
 
-//         alert("User role updated successfully "); // 
+//         alert("User role updated successfully "); //  Step 2 alert
 
 //         setShowModal(false);
 //         fetchUsers();
 //     };
 
+//     // ================== Step 2 ==================
+//     // handle suspend with reason & feedback
 //     const handleSuspend = async () => {
 //         await fetch(`http://localhost:3000/users/${suspendId}`, {
 //             method: "PATCH",
 //             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ status: "suspended" }),
+//             body: JSON.stringify({
+//                 status: "suspended",
+//                 suspendReason,
+//                 suspendFeedback
+//             }),
 //         });
 
-//         alert("User suspended successfully "); // 
+//         alert("User suspended with reason "); // 👈 Step 2 alert
 
+//         // reset modal state
 //         setSuspendId(null);
+//         setSuspendReason("");
+//         setSuspendFeedback("");
 //         fetchUsers();
 //     };
+//     // ===========================================
 
 //     return (
 //         <div className="p-4 md:p-8">
@@ -176,6 +109,7 @@
 //                                         Update
 //                                     </button>
 
+//                                     {/* Step 2: Suspend button triggers modal */}
 //                                     <button
 //                                         onClick={() => setSuspendId(u._id)}
 //                                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -224,20 +158,38 @@
 //                 </div>
 //             )}
 
-//             {/* Suspend modal */}
+//             {/* ================== Step 2 ================== */}
+//             {/* Suspend modal with Reason + Feedback */}
 //             {suspendId && (
 //                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
 //                     <div className="bg-white w-full max-w-sm rounded-xl p-6 shadow">
 //                         <h3 className="text-lg font-semibold mb-4">
-//                             Confirm suspend user?
+//                             Suspend User
 //                         </h3>
+
+//                         {/* Reason input */}
+//                         <input
+//                             type="text"
+//                             placeholder="Reason"
+//                             value={suspendReason}
+//                             onChange={(e) => setSuspendReason(e.target.value)}
+//                             className="w-full border p-2 rounded mb-2"
+//                         />
+
+//                         {/* Feedback textarea */}
+//                         <textarea
+//                             placeholder="Feedback"
+//                             value={suspendFeedback}
+//                             onChange={(e) => setSuspendFeedback(e.target.value)}
+//                             className="w-full border p-2 rounded mb-4"
+//                         />
 
 //                         <div className="flex justify-end gap-2">
 //                             <button
-//                                 onClick={handleSuspend}
+//                                 onClick={handleSuspend} // 👈 Step 2 submit
 //                                 className="bg-red-500 text-white px-4 py-2 rounded"
 //                             >
-//                                 Yes
+//                                 Submit
 //                             </button>
 
 //                             <button
@@ -250,6 +202,7 @@
 //                     </div>
 //                 </div>
 //             )}
+//             {/* =========================================== */}
 //         </div>
 //     );
 // };
@@ -258,22 +211,23 @@
 
 
 
-
 import { useEffect, useState } from "react";
 
 const ManageUsers = () => {
+    // ================= State =================
     const [users, setUsers] = useState([]);
+
+    // Role update modal
     const [showModal, setShowModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [newRole, setNewRole] = useState("");
+
+    // Suspend modal
     const [suspendId, setSuspendId] = useState(null);
+    const [suspendReason, setSuspendReason] = useState("");
+    const [suspendFeedback, setSuspendFeedback] = useState("");
 
-    // ================== Step 2 ==================
-    // Suspend modal input fields
-    const [suspendReason, setSuspendReason] = useState(""); // reason input
-    const [suspendFeedback, setSuspendFeedback] = useState(""); // feedback textarea
-    // ===========================================
-
+    // ================= Fetch all users =================
     const fetchUsers = async () => {
         const res = await fetch("http://localhost:3000/users");
         const data = await res.json();
@@ -284,12 +238,14 @@ const ManageUsers = () => {
         fetchUsers();
     }, []);
 
+    // ================= Open role update modal =================
     const handleOpenModal = (user) => {
         setSelectedUser(user);
         setNewRole(user.role);
         setShowModal(true);
     };
 
+    // ================= Update role =================
     const handleModalSubmit = async () => {
         await fetch(`http://localhost:3000/users/${selectedUser._id}`, {
             method: "PATCH",
@@ -297,14 +253,12 @@ const ManageUsers = () => {
             body: JSON.stringify({ role: newRole }),
         });
 
-        alert("User role updated successfully ✅"); // 👈 Step 2 alert
-
+        alert("User role updated successfully");
         setShowModal(false);
         fetchUsers();
     };
 
-    // ================== Step 2 ==================
-    // handle suspend with reason & feedback
+    // ================= Suspend user =================
     const handleSuspend = async () => {
         await fetch(`http://localhost:3000/users/${suspendId}`, {
             method: "PATCH",
@@ -312,27 +266,66 @@ const ManageUsers = () => {
             body: JSON.stringify({
                 status: "suspended",
                 suspendReason,
-                suspendFeedback
+                suspendFeedback,
             }),
         });
 
-        alert("User suspended with reason ✅"); // 👈 Step 2 alert
+        alert("User suspended successfully");
 
-        // reset modal state
+        // modal reset
         setSuspendId(null);
         setSuspendReason("");
         setSuspendFeedback("");
         fetchUsers();
     };
-    // ===========================================
+
+    // ================= Unsuspend user =================
+    // const handleUnsuspend = async (id) => {
+    //     await fetch(`http://localhost:3000/users/${id}`, {
+    //         method: "PATCH",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({
+    //             status: "active",
+    //             suspendReason: "",
+    //             suspendFeedback: "",
+    //         }),
+    //     });
+
+    //     alert("User unsuspended successfully");
+    //     fetchUsers();
+    // };
+
+    const handleUnsuspend = async (id) => {
+        const res = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                status: "active",
+                suspendReason: "",
+                suspendFeedback: "",
+            }),
+        });
+
+        const updatedUser = await res.json(); // backend থেকে updated user
+
+        alert("User unsuspended successfully");
+
+        fetchUsers();
+
+        // ================== Update AuthContext if current user ==================
+        if (updatedUser.uid === user?.uid) {
+            setUser(updatedUser);
+        }
+    };
+
 
     return (
-        <div className="p-4 md:p-8">
-            <h2 className="text-2xl font-bold mb-6">Manage Users</h2>
+        <div className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
 
-            {/* table wrapper responsive */}
-            <div className="overflow-x-auto bg-white rounded-xl shadow">
-                <table className="min-w-full text-sm md:text-base">
+            {/* ================= User Table ================= */}
+            <div className="overflow-x-auto bg-white shadow rounded">
+                <table className="min-w-full">
                     <thead className="bg-gray-100">
                         <tr>
                             <th className="p-3 text-left">Name</th>
@@ -347,8 +340,10 @@ const ManageUsers = () => {
                         {users.map((u) => (
                             <tr key={u._id} className="border-t">
                                 <td className="p-3">{u.name}</td>
-                                <td className="p-3 break-all">{u.email}</td>
+                                <td className="p-3">{u.email}</td>
                                 <td className="p-3 capitalize">{u.role}</td>
+
+                                {/* Status badge */}
                                 <td className="p-3">
                                     <span
                                         className={`px-2 py-1 rounded text-xs font-semibold ${u.status === "suspended"
@@ -359,20 +354,32 @@ const ManageUsers = () => {
                                         {u.status || "active"}
                                     </span>
                                 </td>
-                                <td className="p-3 flex gap-2 flex-wrap">
+
+                                {/* Actions */}
+                                <td className="p-3 flex gap-2">
+                                    {/* Role update */}
                                     <button
                                         onClick={() => handleOpenModal(u)}
-                                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                                        className="bg-blue-500 text-white px-3 py-1 rounded"
                                     >
                                         Update
                                     </button>
 
-                                    {/* Step 2: Suspend button triggers modal */}
+                                    {/* Suspend / Unsuspend toggle */}
                                     <button
-                                        onClick={() => setSuspendId(u._id)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                        onClick={() =>
+                                            u.status === "suspended"
+                                                ? handleUnsuspend(u._id)
+                                                : setSuspendId(u._id)
+                                        }
+                                        className={`px-3 py-1 rounded text-white ${u.status === "suspended"
+                                            ? "bg-green-500"
+                                            : "bg-red-500"
+                                            }`}
                                     >
-                                        Suspend
+                                        {u.status === "suspended"
+                                            ? "Unsuspend"
+                                            : "Suspend"}
                                     </button>
                                 </td>
                             </tr>
@@ -381,16 +388,16 @@ const ManageUsers = () => {
                 </table>
             </div>
 
-            {/* Update modal */}
+            {/* ================= Role Update Modal ================= */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-                    <div className="bg-white w-full max-w-sm rounded-xl p-6 shadow">
-                        <h3 className="text-lg font-semibold mb-4">Update Role</h3>
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded w-80">
+                        <h3 className="font-semibold mb-3">Update Role</h3>
 
                         <select
                             value={newRole}
                             onChange={(e) => setNewRole(e.target.value)}
-                            className="w-full border p-2 rounded mb-4"
+                            className="w-full border p-2 mb-4"
                         >
                             <option value="admin">Admin</option>
                             <option value="manager">Manager</option>
@@ -400,14 +407,13 @@ const ManageUsers = () => {
                         <div className="flex justify-end gap-2">
                             <button
                                 onClick={handleModalSubmit}
-                                className="bg-green-500 text-white px-4 py-2 rounded"
+                                className="bg-green-500 text-white px-3 py-1 rounded"
                             >
                                 Save
                             </button>
-
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="bg-gray-300 px-4 py-2 rounded"
+                                className="bg-gray-300 px-3 py-1 rounded"
                             >
                                 Cancel
                             </button>
@@ -416,43 +422,36 @@ const ManageUsers = () => {
                 </div>
             )}
 
-            {/* ================== Step 2 ================== */}
-            {/* Suspend modal with Reason + Feedback */}
+            {/* ================= Suspend Modal ================= */}
             {suspendId && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-                    <div className="bg-white w-full max-w-sm rounded-xl p-6 shadow">
-                        <h3 className="text-lg font-semibold mb-4">
-                            Suspend User
-                        </h3>
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded w-80">
+                        <h3 className="font-semibold mb-3">Suspend User</h3>
 
-                        {/* Reason input */}
                         <input
-                            type="text"
                             placeholder="Reason"
                             value={suspendReason}
                             onChange={(e) => setSuspendReason(e.target.value)}
-                            className="w-full border p-2 rounded mb-2"
+                            className="w-full border p-2 mb-2"
                         />
 
-                        {/* Feedback textarea */}
                         <textarea
                             placeholder="Feedback"
                             value={suspendFeedback}
                             onChange={(e) => setSuspendFeedback(e.target.value)}
-                            className="w-full border p-2 rounded mb-4"
+                            className="w-full border p-2 mb-4"
                         />
 
                         <div className="flex justify-end gap-2">
                             <button
-                                onClick={handleSuspend} // 👈 Step 2 submit
-                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                onClick={handleSuspend}
+                                className="bg-red-500 text-white px-3 py-1 rounded"
                             >
                                 Submit
                             </button>
-
                             <button
                                 onClick={() => setSuspendId(null)}
-                                className="bg-gray-300 px-4 py-2 rounded"
+                                className="bg-gray-300 px-3 py-1 rounded"
                             >
                                 Cancel
                             </button>
@@ -460,7 +459,6 @@ const ManageUsers = () => {
                     </div>
                 </div>
             )}
-            {/* =========================================== */}
         </div>
     );
 };
