@@ -1,8 +1,51 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import Logo from "../pages/Logo/Logo";
+import { AuthContext } from "../context/AuthProvider";
 
 const DashboardLayout = () => {
+
+    // const { user } = useContext(AuthContext);
+    // console.log(user)
+
+
+    // const [role, setRole] = useState("");
+
+    // useEffect(() => {
+
+
+    //     fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`)
+
+    //     // fetch(http:localhost:3000/users/uid/${user.uid}?email=${user.email})
+    //     .then(res => res.json())
+    //         .then(data => {
+    //             if (!data.message) {
+    //                 setRole(data.role);
+
+    //             }
+    //         })
+    //         .catch(err => console.error(err));
+    // }
+
+    const { user } = useContext(AuthContext);
+    const [role, setRole] = useState("");
+
+    useEffect(() => {
+        if (!user?.uid || !user?.email) return;
+
+        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.message) {
+                    setRole(data.role); // 👈 role set
+                }
+            })
+            .catch(err => console.error(err));
+    }, [user?.uid, user?.email]);
+    console.log(role)
+
+
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -38,9 +81,19 @@ const DashboardLayout = () => {
 
 
                         {/* dashboard links */}
-                        <li>
+                        {/* <li>
                             <NavLink to="manage-users">Manage Users</NavLink>
-                        </li>
+                        </li> */}
+
+                        {
+                            role === "admin" &&
+
+                            <li>
+                                <NavLink to="manage-users">Manage Users</NavLink>
+                            </li>
+
+                        }
+
 
                         <li>
                             <NavLink to="all-productss">All Products</NavLink>

@@ -279,21 +279,6 @@ const ManageUsers = () => {
         fetchUsers();
     };
 
-    // ================= Unsuspend user =================
-    // const handleUnsuspend = async (id) => {
-    //     await fetch(`http://localhost:3000/users/${id}`, {
-    //         method: "PATCH",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({
-    //             status: "active",
-    //             suspendReason: "",
-    //             suspendFeedback: "",
-    //         }),
-    //     });
-
-    //     alert("User unsuspended successfully");
-    //     fetchUsers();
-    // };
 
     const handleUnsuspend = async (id) => {
         const res = await fetch(`http://localhost:3000/users/${id}`, {
