@@ -96,7 +96,7 @@ const DashboardLayout = () => {
 
 
                         <li>
-                            <NavLink to="all-productss">All Products</NavLink>
+                            <NavLink to="all-productss">All Productss</NavLink>
                         </li>
 
                         <li>
