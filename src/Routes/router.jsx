@@ -14,7 +14,7 @@ import AllProductss from "../DashboardOrg/AllProductss";
 import BookingPage from "../pages/Booking/BookingPage";
 import MyOrders from "../DashboardOrg/MyOrders";
 import { AuthContext } from "../context/AuthProvider";
-
+import AdminRoute from "./AdminRoute";
 // PrivateRoute Component
 const PrivateRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -49,7 +49,15 @@ export const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
             { path: "manage-users", element: <ManageUsers /> },
-            { path: "all-productss", element: <AllProductss /> },
+
+            // { path: "all-productss", element: <AllProductss /> },
+            // Dashboard children
+            {
+                path: "all-productss",
+                element: <AdminRoute />,
+                children: [{ path: "", element: <AllProductss /> }],
+            },
+
             { path: "all-orders", element: <ALlOrders /> },
             { path: "my-orders", element: <MyOrders /> },
         ],

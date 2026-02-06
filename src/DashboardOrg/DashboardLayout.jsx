@@ -95,9 +95,18 @@ const DashboardLayout = () => {
                         }
 
 
-                        <li>
+                        {/* <li>
                             <NavLink to="all-productss">All Productss</NavLink>
-                        </li>
+                        </li> */}
+                        {
+                            role === "admin" && (
+                                <li>
+                                    <NavLink to="all-productss">All Productss</NavLink>
+                                </li>
+                            )
+                        }
+
+
 
                         <li>
                             <NavLink to="all-orders">All Orders</NavLink>
