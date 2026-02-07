@@ -81,9 +81,6 @@ const DashboardLayout = () => {
 
 
                         {/* dashboard links */}
-                        {/* <li>
-                            <NavLink to="manage-users">Manage Users</NavLink>
-                        </li> */}
 
                         {
                             role === "admin" &&
@@ -94,10 +91,6 @@ const DashboardLayout = () => {
 
                         }
 
-
-                        {/* <li>
-                            <NavLink to="all-productss">All Productss</NavLink>
-                        </li> */}
                         {
                             role === "admin" && (
                                 <li>
@@ -111,6 +104,31 @@ const DashboardLayout = () => {
                         <li>
                             <NavLink to="all-orders">All Orders</NavLink>
                         </li>
+
+
+
+
+                        {/* Manager Links */}
+                        {role === "manager" && (
+                            <>
+                                <li>
+                                    <Link to="/dashboard/manager/add-product">Add Product</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/manager/manage-products">Manage Products</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/manager/pending-orders">Pending Orders</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/manager/approve-orders">Approve Orders</Link>
+                                </li>
+                            </>
+                        )}
+
+
+
+
 
 
                         {/* List item */}
@@ -129,3 +147,5 @@ const DashboardLayout = () => {
 };
 
 export default DashboardLayout;
+
+
