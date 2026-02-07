@@ -106,7 +106,7 @@ const DashboardLayout = () => {
                             )
                         }
 
-
+                        <li><a href="/dashboard/my-orders">My Orders</a></li>
 
                         <li>
                             <NavLink to="all-orders">All Orders</NavLink>

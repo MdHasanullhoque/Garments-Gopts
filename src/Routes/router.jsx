@@ -60,6 +60,10 @@ export const router = createBrowserRouter([
             },
 
             // { path: "all-orders", element: <ALlOrders /> },
+            {
+                path: "my-orders",
+                element: <MyOrders />
+            },
 
             {
                 path: "all-orders",
