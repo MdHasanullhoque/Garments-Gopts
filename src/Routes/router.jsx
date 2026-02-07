@@ -9,7 +9,8 @@ import ProductDetails from "../pages/Home/ProductDetails";
 import AllProducts from "../pages/AllProducts";
 import DashboardLayout from "../DashboardOrg/DashboardLayout";
 import ManageUsers from "../DashboardOrg/ManageUsers";
-import ALlOrders from "../DashboardOrg/ALlOrders";
+import ALlOrders from "../DashboardOrg/AllOrders";
+import AllOrders from "../DashboardOrg/AllOrders";
 import AllProductss from "../DashboardOrg/AllProductss";
 import BookingPage from "../pages/Booking/BookingPage";
 import MyOrders from "../DashboardOrg/MyOrders";
@@ -58,9 +59,16 @@ export const router = createBrowserRouter([
                 children: [{ path: "", element: <AllProductss /> }],
             },
 
-            { path: "all-orders", element: <ALlOrders /> },
+            // { path: "all-orders", element: <ALlOrders /> },
+
+            {
+                path: "all-orders",
+                element: <AdminRoute />, // admin can see all orders
+                children: [{ path: "", element: <AllOrders /> }],
+            },
             { path: "my-orders", element: <MyOrders /> },
         ],
     },
 ]);
+
 
