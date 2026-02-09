@@ -5,28 +5,7 @@ import { AuthContext } from "../context/AuthProvider";
 
 const DashboardLayout = () => {
 
-    // const { user } = useContext(AuthContext);
-    // console.log(user)
-
-
-    // const [role, setRole] = useState("");
-
-    // useEffect(() => {
-
-
-    //     fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`)
-
-    //     // fetch(http:localhost:3000/users/uid/${user.uid}?email=${user.email})
-    //     .then(res => res.json())
-    //         .then(data => {
-    //             if (!data.message) {
-    //                 setRole(data.role);
-
-    //             }
-    //         })
-    //         .catch(err => console.error(err));
-    // }
-
+    
     const { user } = useContext(AuthContext);
     const [role, setRole] = useState("");
 
@@ -58,11 +37,11 @@ const DashboardLayout = () => {
                     </label>
                     <div className="px-4"><Logo /></div>
                 </nav>
-                {/* Page content here */}
+               
 
                 <Outlet></Outlet>
 
-                <div className="p-4">Page Content</div>
+                
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">
@@ -105,7 +84,13 @@ const DashboardLayout = () => {
                             <NavLink to="all-orders">All Orders</NavLink>
                         </li>
 
+                        <li>
+                            <NavLink to="/dashboard/profile">My Profile</NavLink>
+                        </li>
 
+                        <li>
+                            <NavLink to="track-order">Track Order</NavLink>
+                        </li>
 
 
                         {/* Manager Links */}
@@ -125,6 +110,8 @@ const DashboardLayout = () => {
                                 </li>
                             </>
                         )}
+
+
 
 
 

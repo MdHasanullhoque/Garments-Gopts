@@ -1,0 +1,18 @@
+// pages/NotFound.jsx
+import { Link } from "react-router-dom";
+
+const NotFound = () => {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-5xl font-bold">404</h1>
+        <p className="mt-2">Page Not Found</p>
+        <Link to="/" className="btn btn-primary mt-4">
+          Go Home
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default NotFound;
