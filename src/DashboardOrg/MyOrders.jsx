@@ -8,7 +8,7 @@ const MyOrders = () => {
 
     // useEffect(() => {
     //     if (!user?.email) return;
-    //     fetch("http://localhost:3000/orders")
+    //     fetch("https://server-gopts.vercel.app/orders")
     //         .then(res => res.json())
     //         .then(data => setOrders(data.filter(o => o.email === user.email)))
     //         .catch(err => console.error(err));
@@ -16,7 +16,7 @@ const MyOrders = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:3000/orders/my-orders?email=${user.email}`)
+        fetch(`https://server-gopts.vercel.app/orders/my-orders?email=${user.email}`)
             .then(res => res.json())
             .then(data => setOrders(data))
             .catch(err => console.error(err));

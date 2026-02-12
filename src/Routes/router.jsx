@@ -23,6 +23,8 @@ import ApproveOrders from "../DashboardOrg/Manager Dashboard Pages/ApproveOrders
 import MyProfile from "../DashboardOrg/MyProfile";
 import TrackOrder from "../DashboardOrg/TrackOrder";
 import NotFound from "../pages/NotFound";
+import AboutUs from "../AboutUs";
+import Contact from "../Contact";
 
 // PrivateRoute
 const PrivateRoute = ({ children }) => {
@@ -40,7 +42,12 @@ export const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "login", element: <Login /> },
             { path: "register", element: <Register /> },
+            { path: "about-us", element: <AboutUs /> },
+            { path: "contact", element: <Contact /> },
+
+
             { path: "products", element: <Navigate to="/all-products" /> },
+
             { path: "products/:id", element: <ProductDetails /> },
             { path: "all-products", element: <AllProducts /> },
 

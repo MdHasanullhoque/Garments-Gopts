@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import goptsImg from "../../assets/Gopts-img.jpg";
 const HeroBanner = () => {
     const navigate = useNavigate();
 
@@ -10,7 +10,7 @@ const HeroBanner = () => {
 
                 {/* Text */}
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }} 
+                    initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.7 }}
                     className="flex flex-col justify-center items-center md:items-start text-center md:text-left"
@@ -48,11 +48,15 @@ const HeroBanner = () => {
                     transition={{ duration: 0.7 }}
                     className="flex justify-center md:justify-end mt-6 md:mt-0"
                 >
-                    <img
+                    {/* <img
                         src="https://i.ibb.co/0fGzY5x/garments-banner.jpg"
                         alt="Garments"
                         className="rounded-xl shadow-lg w-full max-w-xs md:max-w-sm lg:max-w-md object-cover mb-2"
-                    />
+                    /> */}
+
+                    <div>
+                        <img src={goptsImg} alt="Gopts" />
+                    </div>
                 </motion.div>
 
             </div>

@@ -8,7 +8,7 @@ const PendingOrders = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch("http://localhost:3000/orders?status=Pending", {
+        fetch("https://server-gopts.vercel.app/orders?status=Pending", {
             headers: {
                 "x-email": user.email
             }

@@ -4,6 +4,7 @@ import HeroBanner from './HeroBanner';
 import HomeProducts from './HomeProducts';
 import HowItWorks from './HowItWorks';
 import CustomerFeedback from './CustomerFeedback';
+import TestHomePlz from '../../Test/TestHomePlz';
 
 const Home = () => {
     return (
@@ -23,17 +24,21 @@ const Home = () => {
                 <h3 className="text-xl md:text-2xl font-semibold mb-6 text-center">
                     Our Products
                 </h3>
-                <HomeProducts />
+                {/* <HomeProducts /> */}
+
+                {/* Test */}
+                <TestHomePlz></TestHomePlz>
+
             </section>
 
             <div>
                 <HowItWorks />
 
-                <CustomerFeedback/>
-                
+                <CustomerFeedback />
+
             </div>
 
-          
+
         </div>
     );
 };

@@ -1,4 +1,3 @@
-
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../../../context/AuthProvider';
@@ -47,8 +46,23 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1 space-x-4">
                     <li><Link to="/">Home</Link></li>
                     <li onClick={() => setMenuOpen(false)}><Link to="/all-products">All Products</Link></li>
-                    <li><a>About Us</a></li>
-                    <li><a>Contact</a></li>
+
+                    {/* <li><a>About Us</a></li>
+                    <li><a>Contact</a></li> */}
+
+                    {/* About Us link using react-router Link */}
+                    <li>
+                        <Link to="/about-us" onClick={() => setMenuOpen(false)}>
+                            About Us
+                        </Link>
+                    </li>
+
+                    {/* Contact link using react-router Link */}
+                    <li>
+                        <Link to="/contact" onClick={() => setMenuOpen(false)}>
+                            Contact
+                        </Link>
+                    </li>
 
                     {/*  Dashboard only when logged in */}
                     {user && (
@@ -82,10 +96,22 @@ const Navbar = () => {
                         <ul className="flex flex-col p-4 space-y-2">
                             <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
                             <li onClick={() => setMenuOpen(false)}><Link to="/all-products">All Products</Link></li>
-                            <li><a onClick={() => setMenuOpen(false)}>About Us</a></li>
-                            <li><a onClick={() => setMenuOpen(false)}>Contact</a></li>
+                            {/* <li><a onClick={() => setMenuOpen(false)}>About Us</a></li>
+                            <li><a onClick={() => setMenuOpen(false)}>Contact</a></li> */}
 
+                            {/* About Us link using react-router Link */}
+                            <li>
+                                <Link to="/about-us" onClick={() => setMenuOpen(false)}>
+                                    About Us
+                                </Link>
+                            </li>
 
+                            {/* Contact link using react-router Link */}
+                            <li>
+                                <Link to="/contact" onClick={() => setMenuOpen(false)}>
+                                    Contact
+                                </Link>
+                            </li>
 
                             {/*  Dashboard only when logged in */}
                             {user && (
@@ -93,6 +119,13 @@ const Navbar = () => {
                                     <Link to="/dashboard">Dashboard</Link>
                                 </li>
                             )}
+
+                            {/*  Dashboard only when logged in */}
+                            {/* {user && (
+                                <li>
+                                    <Link to="/dashboard">Dashboard</Link>
+                                </li>
+                            )} */}
 
                         </ul>
                     </div>

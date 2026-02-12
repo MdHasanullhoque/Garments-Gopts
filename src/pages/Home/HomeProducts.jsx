@@ -5,7 +5,7 @@ const HomeProducts = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:3000/products')
+        fetch('https://server-gopts.vercel.app/products')
             .then(res => res.json())
             .then(data => {
                 setProducts(data);
@@ -59,3 +59,4 @@ const HomeProducts = () => {
 };
 
 export default HomeProducts;
+

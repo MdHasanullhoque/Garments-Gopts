@@ -5,13 +5,13 @@ const ManageProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/products")
+    fetch("https://server-gopts.vercel.app/products")
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);
 
   const deleteProduct = (id) => {
-    fetch(`http://localhost:3000/products/${id}`, { method: "DELETE" })
+    fetch(`https://server-gopts.vercel.app/products/${id}`, { method: "DELETE" })
       .then(() => {
         setProducts(prev => prev.filter(p => p._id !== id));
       });

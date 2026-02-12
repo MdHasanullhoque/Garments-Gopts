@@ -1,5 +1,4 @@
 
-
 import { useEffect, useState } from "react";
 
 const ManageUsers = () => {
@@ -18,7 +17,7 @@ const ManageUsers = () => {
 
     // ================= Fetch all users =================
     const fetchUsers = async () => {
-        const res = await fetch("http://localhost:3000/users");
+        const res = await fetch("https://server-gopts.vercel.app/users");
         const data = await res.json();
         setUsers(data);
     };
@@ -36,7 +35,7 @@ const ManageUsers = () => {
 
     // ================= Update role =================
     const handleModalSubmit = async () => {
-        await fetch(`http://localhost:3000/users/${selectedUser._id}`, {
+        await fetch(`https://server-gopts.vercel.app/users/${selectedUser._id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ role: newRole }),
@@ -49,7 +48,7 @@ const ManageUsers = () => {
 
     // ================= Suspend user =================
     const handleSuspend = async () => {
-        await fetch(`http://localhost:3000/users/${suspendId}`, {
+        await fetch(`https://server-gopts.vercel.app/users/${suspendId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -70,7 +69,7 @@ const ManageUsers = () => {
 
 
     const handleUnsuspend = async (id) => {
-        const res = await fetch(`http://localhost:3000/users/${id}`, {
+        const res = await fetch(`https://server-gopts.vercel.app/users/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
