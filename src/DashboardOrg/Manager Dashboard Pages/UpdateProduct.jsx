@@ -18,7 +18,7 @@ const UpdateProduct = () => {
     });
 
    useEffect(() => {
-    fetch(`http://localhost:3000/products/${id}`)
+    fetch(`https://server-gopts-bzds.vercel.app/products/${id}`)
         .then(res => res.json())
         .then(data => {
             setForm({
@@ -41,7 +41,7 @@ const UpdateProduct = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const res = await fetch(`http://localhost:3000/products/${id}`, {
+        const res = await fetch(`https://server-gopts-bzds.vercel.app/products/${id}`, {
             method: "PATCH",
             headers: { "content-type": "application/json" },
             body: JSON.stringify({ ...form, email: user.email })

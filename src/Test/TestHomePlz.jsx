@@ -6,7 +6,7 @@ const TestHomePlz = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/products")
+        fetch("https://server-gopts-bzds.vercel.app/products")
             .then((res) => res.json())
             .then((data) => {
                 setProducts(Array.isArray(data) ? data : []);

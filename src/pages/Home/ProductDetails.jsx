@@ -9,7 +9,7 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/product-details/${id}`)
+        fetch(`https://server-gopts-bzds.vercel.app/product-details/${id}`)
             .then(res => res.json())
             .then(data => {
                 setProduct(data);

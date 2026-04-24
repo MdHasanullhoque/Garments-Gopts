@@ -19,7 +19,7 @@ const ManageUsers = () => {
     // ================= Fetch all users =================
     const fetchUsers = async () => {
         console.log("Fetching with email:", user?.email);
-        const res = await fetch("http://localhost:3000/users", {
+        const res = await fetch("https://server-gopts-bzds.vercel.app/users", {
             headers: {
                 "x-email": user.email
             }
@@ -42,7 +42,7 @@ const ManageUsers = () => {
 
     // ================= Update role =================
     const handleModalSubmit = async () => {
-        await fetch(`http://localhost:3000/users/${selectedUser._id}`, {
+        await fetch(`https://server-gopts-bzds.vercel.app/users/${selectedUser._id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const ManageUsers = () => {
 
     // ================= Suspend user =================
     const handleSuspend = async () => {
-        await fetch(`http://localhost:3000/users/${suspendId}`, {
+        await fetch(`https://server-gopts-bzds.vercel.app/users/${suspendId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const ManageUsers = () => {
     };
 
     const handleUnsuspend = async (id) => {
-        await fetch(`http://localhost:3000/users/${id}`, {
+        await fetch(`https://server-gopts-bzds.vercel.app/users/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

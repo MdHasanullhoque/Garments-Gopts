@@ -8,7 +8,7 @@ const ApproveOrders = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch("http://localhost:3000/orders/approved", {
+        fetch("https://server-gopts-bzds.vercel.app/orders/approved", {
             headers: {
                 "x-email": user.email, //  MUST
             },
@@ -26,7 +26,7 @@ const ApproveOrders = () => {
     }, [user?.email]);
 
     const updateStatus = (id, status) => {
-        fetch(`http://localhost:3000/orders/${id}/status`, {
+        fetch(`https://server-gopts-bzds.vercel.app/orders/${id}/status`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

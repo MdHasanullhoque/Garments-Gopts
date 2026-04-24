@@ -7,7 +7,7 @@ const MyOrders = () => {
 
     useEffect(() => {
         if (!user?.email) return;
-        fetch(`http://localhost:3000/orders/my-orders?email=${user.email}`)
+        fetch(`https://server-gopts-bzds.vercel.app/orders/my-orders?email=${user.email}`)
             .then(res => res.json())
             .then(data => setOrders(data))
             .catch(err => console.error(err));
@@ -15,7 +15,7 @@ const MyOrders = () => {
 
     const handleCancel = async (id) => {
         if (!window.confirm("Cancel this order?")) return;
-        await fetch(`http://localhost:3000/orders/${id}`, {
+        await fetch(`https://server-gopts-bzds.vercel.app/orders/${id}`, {
             method: "DELETE",
             headers: { "x-email": user.email }
         });

@@ -6,7 +6,7 @@ const PendingOrders = () => {
     const [orders, setOrders] = useState([]);
 
     const handleStatus = async (id, status) => {
-    await fetch(`http://localhost:3000/orders/${id}/status`, {
+    await fetch(`https://server-gopts-bzds.vercel.app/orders/${id}/status`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -21,7 +21,7 @@ const PendingOrders = () => {
         
         if (!user?.email) return;
 
-        fetch("http://localhost:3000/orders/pending", {
+        fetch("https://server-gopts-bzds.vercel.app/orders/pending", {
             headers: {
                 "x-email": user.email
             }

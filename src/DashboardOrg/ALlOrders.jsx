@@ -13,7 +13,7 @@ const AllOrders = () => {
     const fetchOrders = () => {
         if (!user?.email) return;
         setLoading(true);
-        fetch("http://localhost:3000/orders", {
+        fetch("https://server-gopts-bzds.vercel.app/orders", {
             headers: { "x-email": user.email },
         })
             .then(res => res.json())
@@ -35,7 +35,7 @@ const AllOrders = () => {
 
     const handleStatusChange = async (orderId, newStatus) => {
         try {
-            const res = await fetch(`http://localhost:3000/orders/${orderId}/status`, {
+            const res = await fetch(`https://server-gopts-bzds.vercel.app/orders/${orderId}/status`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

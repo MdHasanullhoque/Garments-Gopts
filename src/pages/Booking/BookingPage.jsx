@@ -26,7 +26,7 @@ const BookingPage = () => {
     useEffect(() => {
         if (!user?.uid || !user?.email) return;
 
-        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`, {
+        fetch(`https://server-gopts-bzds.vercel.app/users/uid/${user.uid}?email=${user.email}`, {
             headers: {
                 "x-email": user.email
             }
@@ -46,7 +46,7 @@ const BookingPage = () => {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost:3000/products/${id}`)
+        fetch(`https://server-gopts-bzds.vercel.app/products/${id}`)
             .then(res => res.json())
             .then(data => setProduct(data))
             .catch(err => console.error(err));
@@ -131,7 +131,7 @@ const BookingPage = () => {
         };
 
         try {
-            const res = await fetch("http://localhost:3000/orders", {
+            const res = await fetch("https://server-gopts-bzds.vercel.app/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderData),

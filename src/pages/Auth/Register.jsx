@@ -41,7 +41,7 @@ const Register = () => {
                 status
             };
 
-            const syncRes = await fetch("http://localhost:3000/users/sync", {
+            const syncRes = await fetch("https://server-gopts-bzds.vercel.app/users/sync", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(currentUser)

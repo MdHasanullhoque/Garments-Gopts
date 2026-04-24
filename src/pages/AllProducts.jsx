@@ -7,7 +7,7 @@ const AllProducts = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/products/all") // backend endpoint
+        fetch("https://server-gopts-bzds.vercel.app/products/all") // backend endpoint
             .then(res => res.json())
             .then(data => {
                 // filter only visible products

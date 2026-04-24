@@ -13,7 +13,7 @@ const AdminRoute = ({ children }) => {
             return;
         }
 
-        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`)
+        fetch(`https://server-gopts-bzds.vercel.app/users/uid/${user.uid}?email=${user.email}`)
             .then(res => res.json())
             .then(data => {
                 if (!data.message) {

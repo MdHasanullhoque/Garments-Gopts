@@ -12,7 +12,7 @@ const DashboardLayout = () => {
     useEffect(() => {
         if (!user?.uid || !user?.email) return;
 
-        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`, {
+        fetch(`https://server-gopts-bzds.vercel.app/users/uid/${user.uid}?email=${user.email}`, {
             headers: {
                 "x-email": user.email
             }

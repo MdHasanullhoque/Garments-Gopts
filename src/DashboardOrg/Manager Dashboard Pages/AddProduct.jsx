@@ -22,7 +22,7 @@ const AddProduct = () => {
     const handleSubmit = async e => {
         e.preventDefault();
 
-        const res = await fetch("http://localhost:3000/products/add", {
+        const res = await fetch("https://server-gopts-bzds.vercel.app/products/add", {
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify({
