@@ -6,13 +6,10 @@ const TestHomePlz = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        //  Backend endpoint
-        // change to your deployed server URL or localhost
-        fetch("https://server-gopts.vercel.app/products")
+        fetch("http://localhost:3000/products")
             .then((res) => res.json())
             .then((data) => {
-                //  Frontend expects name, shortDescription, imageUrl
-                setProducts(data);
+                setProducts(Array.isArray(data) ? data : []);
                 setLoading(false);
             })
             .catch((error) => {

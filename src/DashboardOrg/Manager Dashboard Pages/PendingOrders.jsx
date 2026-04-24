@@ -5,10 +5,23 @@ const PendingOrders = () => {
     const { user } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
 
+    const handleStatus = async (id, status) => {
+    await fetch(`http://localhost:3000/orders/${id}/status`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "x-email": user.email
+        },
+        body: JSON.stringify({ status })
+    });
+    setOrders(prev => prev.filter(o => o._id !== id));
+};
+
     useEffect(() => {
+        
         if (!user?.email) return;
 
-        fetch("https://server-gopts.vercel.app/orders?status=Pending", {
+        fetch("http://localhost:3000/orders/pending", {
             headers: {
                 "x-email": user.email
             }
@@ -37,6 +50,16 @@ const PendingOrders = () => {
                             <th>Status</th>
                         </tr>
                     </thead>
+                    {/* <tbody>
+                        {orders.map(o => (
+                            <tr key={o._id}>
+                                <td>{o.productTitle}</td>
+                                <td>{o.email}</td>
+                                <td>${o.orderPrice}</td>
+                                <td>{o.status}</td>
+                            </tr>
+                        ))}
+                    </tbody> */}
                     <tbody>
                         {orders.map(o => (
                             <tr key={o._id}>
@@ -44,6 +67,20 @@ const PendingOrders = () => {
                                 <td>{o.email}</td>
                                 <td>${o.orderPrice}</td>
                                 <td>{o.status}</td>
+                                <td>
+                                    <button
+                                        onClick={() => handleStatus(o._id, "Approved")}
+                                        className="btn btn-success btn-sm mr-2"
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        onClick={() => handleStatus(o._id, "Rejected")}
+                                        className="btn btn-error btn-sm"
+                                    >
+                                        Reject
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

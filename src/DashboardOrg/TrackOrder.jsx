@@ -14,7 +14,7 @@ const TrackOrder = () => {
             return;
         }
 
-        fetch(`https://server-gopts.vercel.app/orders/track/${orderId}`)
+        fetch(`http://localhost:3000/orders/track/${orderId}`)
             .then(res => {
                 if (!res.ok) throw new Error("Order not found");
                 return res.json();

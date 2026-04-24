@@ -10,7 +10,7 @@ const AllProductss = () => {
 
     const loadProducts = async () => {
         try {
-            const res = await axios.get("https://server-gopts.vercel.app/admin-products/all", {
+            const res = await axios.get("http://localhost:3000/admin-products/all", {
                 headers: { "x-email": user.email },
             });
             setProducts(Array.isArray(res.data) ? res.data : []);
@@ -30,7 +30,7 @@ const AllProductss = () => {
     const deleteProduct = async (id) => {
         if (!window.confirm("Delete permanently?")) return;
         try {
-            await axios.delete(`https://server-gopts.vercel.app/admin-products/${id}`, {
+            await axios.delete(`http://localhost:3000/admin-products/${id}`, {
                 headers: { "x-email": user.email },
             });
             setProducts(products.filter((p) => p._id !== id));
@@ -43,7 +43,7 @@ const AllProductss = () => {
     const toggleShowOnHome = async (id, value) => {
         try {
             await axios.patch(
-                `https://server-gopts.vercel.app/admin-products/home/${id}`,
+                `http://localhost:3000/admin-products/home/${id}`,
                 { showOnHome: value },
                 { headers: { "x-email": user.email } }
             );
@@ -59,7 +59,7 @@ const AllProductss = () => {
     const toggleHide = async (id, value) => {
         try {
             await axios.patch(
-                `https://server-gopts.vercel.app/admin-products/hide/${id}`,
+                `http://localhost:3000/admin-products/hide/${id}`,
                 { isHidden: value },
                 { headers: { "x-email": user.email } }
             );

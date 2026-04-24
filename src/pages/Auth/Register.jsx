@@ -12,6 +12,7 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
@@ -40,7 +41,7 @@ const Register = () => {
                 status
             };
 
-            const syncRes = await fetch("https://server-gopts.vercel.app/users/sync", {
+            const syncRes = await fetch("http://localhost:3000/users/sync", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(currentUser)

@@ -1,17 +1,18 @@
-// ManageProducts.jsx
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://server-gopts.vercel.app/products")
+    fetch("http://localhost:3000/products")
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);
 
   const deleteProduct = (id) => {
-    fetch(`https://server-gopts.vercel.app/products/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:3000/products/${id}`, { method: "DELETE" })
       .then(() => {
         setProducts(prev => prev.filter(p => p._id !== id));
       });
@@ -23,13 +24,21 @@ const ManageProducts = () => {
 
       {products.map(p => (
         <div key={p._id} className="flex justify-between border p-2 mb-2">
-          <span>{p.name}</span>
-          <button
-            onClick={() => deleteProduct(p._id)}
-            className="btn btn-error btn-sm"
-          >
-            Delete
-          </button>
+          <span>{p.title || p.name}</span>
+          <div className="space-x-2">
+            <button
+              onClick={() => navigate(`/dashboard/manager/update-product/${p._id}`)}
+              className="btn btn-warning btn-sm"
+            >
+              Update
+            </button>
+            <button
+              onClick={() => deleteProduct(p._id)}
+              className="btn btn-error btn-sm"
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ))}
     </div>

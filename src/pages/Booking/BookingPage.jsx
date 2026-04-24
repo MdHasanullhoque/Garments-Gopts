@@ -26,9 +26,11 @@ const BookingPage = () => {
     useEffect(() => {
         if (!user?.uid || !user?.email) return;
 
-        fetch(
-            `https://server-gopts.vercel.app/users/uid/${user.uid}?email=${user.email}`
-        )
+        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`, {
+            headers: {
+                "x-email": user.email
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 if (!data.message) {
@@ -44,7 +46,7 @@ const BookingPage = () => {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`https://server-gopts.vercel.app/products/${id}`)
+        fetch(`http://localhost:3000/products/${id}`)
             .then(res => res.json())
             .then(data => setProduct(data))
             .catch(err => console.error(err));
@@ -115,7 +117,7 @@ const BookingPage = () => {
 
         const orderData = {
             productId: id,
-            productTitle: product.name,
+            productTitle: product.title || product.name,
             price: product.price,
             quantity,
             orderPrice: totalPrice,
@@ -129,7 +131,7 @@ const BookingPage = () => {
         };
 
         try {
-            const res = await fetch("https://server-gopts.vercel.app/orders", {
+            const res = await fetch("http://localhost:3000/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderData),
@@ -155,7 +157,7 @@ const BookingPage = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <input value={user.email} readOnly className="input input-bordered w-full" />
-                <input value={product.name} readOnly className="input input-bordered w-full" />
+                <input value={product.title || product.name} readOnly className="input input-bordered w-full" />
                 <input value={product.price} readOnly className="input input-bordered w-full" />
 
                 <input

@@ -5,14 +5,18 @@ import { AuthContext } from "../context/AuthProvider";
 
 const DashboardLayout = () => {
 
-    
+
     const { user } = useContext(AuthContext);
     const [role, setRole] = useState("");
 
     useEffect(() => {
         if (!user?.uid || !user?.email) return;
 
-        fetch(`https://server-gopts.vercel.app/users/uid/${user.uid}?email=${user.email}`)
+        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`, {
+            headers: {
+                "x-email": user.email
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 if (!data.message) {
@@ -37,11 +41,11 @@ const DashboardLayout = () => {
                     </label>
                     <div className="px-4"><Logo /></div>
                 </nav>
-               
+
 
                 <Outlet></Outlet>
 
-                
+
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">

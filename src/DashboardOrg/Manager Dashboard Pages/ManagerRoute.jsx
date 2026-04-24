@@ -1,3 +1,4 @@
+
 import React, { useContext, useState, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
@@ -13,7 +14,7 @@ const ManagerRoute = () => {
             return;
         }
 
-        fetch(`https://server-gopts.vercel.app/users/uid/${user.uid}?email=${user.email}`)
+        fetch(`http://localhost:3000/users/uid/${user.uid}?email=${user.email}`)
             .then(res => res.json())
             .then(data => {
                 if (!data.message) setRole(data.role);

@@ -25,7 +25,7 @@ import TrackOrder from "../DashboardOrg/TrackOrder";
 import NotFound from "../pages/NotFound";
 import AboutUs from "../AboutUs";
 import Contact from "../Contact";
-
+import UpdateProduct from "../DashboardOrg/Manager Dashboard Pages/UpdateProduct";
 // PrivateRoute
 const PrivateRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -95,6 +95,7 @@ export const router = createBrowserRouter([
                     { path: "manage-products", element: <ManageProducts /> },
                     { path: "pending-orders", element: <PendingOrders /> },
                     { path: "approve-orders", element: <ApproveOrders /> },
+                    { path: "update-product/:id", element: <UpdateProduct /> },
                 ],
             },
         ],

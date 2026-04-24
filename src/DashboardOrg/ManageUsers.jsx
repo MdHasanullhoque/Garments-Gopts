@@ -1,7 +1,8 @@
-
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 const ManageUsers = () => {
+    const { user } = useContext(AuthContext);
+
     // ================= State =================
     const [users, setUsers] = useState([]);
 
@@ -17,30 +18,38 @@ const ManageUsers = () => {
 
     // ================= Fetch all users =================
     const fetchUsers = async () => {
-        const res = await fetch("https://server-gopts.vercel.app/users");
+        console.log("Fetching with email:", user?.email);
+        const res = await fetch("http://localhost:3000/users", {
+            headers: {
+                "x-email": user.email
+            }
+        });
         const data = await res.json();
-        setUsers(data);
+        if (Array.isArray(data)) setUsers(data);
     };
 
     useEffect(() => {
+        if (!user?.email) return;
         fetchUsers();
-    }, []);
+    }, [user?.email]);
 
     // ================= Open role update modal =================
-    const handleOpenModal = (user) => {
-        setSelectedUser(user);
-        setNewRole(user.role);
+    const handleOpenModal = (u) => {
+        setSelectedUser(u);
+        setNewRole(u.role);
         setShowModal(true);
     };
 
     // ================= Update role =================
     const handleModalSubmit = async () => {
-        await fetch(`https://server-gopts.vercel.app/users/${selectedUser._id}`, {
+        await fetch(`http://localhost:3000/users/${selectedUser._id}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "x-email": user.email
+            },
             body: JSON.stringify({ role: newRole }),
         });
-
         alert("User role updated successfully");
         setShowModal(false);
         fetchUsers();
@@ -48,55 +57,46 @@ const ManageUsers = () => {
 
     // ================= Suspend user =================
     const handleSuspend = async () => {
-        await fetch(`https://server-gopts.vercel.app/users/${suspendId}`, {
+        await fetch(`http://localhost:3000/users/${suspendId}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "x-email": user.email
+            },
             body: JSON.stringify({
                 status: "suspended",
                 suspendReason,
                 suspendFeedback,
             }),
         });
-
         alert("User suspended successfully");
-
-        // modal reset
         setSuspendId(null);
         setSuspendReason("");
         setSuspendFeedback("");
         fetchUsers();
     };
 
-
     const handleUnsuspend = async (id) => {
-        const res = await fetch(`https://server-gopts.vercel.app/users/${id}`, {
+        await fetch(`http://localhost:3000/users/${id}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "x-email": user.email
+            },
             body: JSON.stringify({
                 status: "active",
                 suspendReason: "",
                 suspendFeedback: "",
             }),
         });
-
-        const updatedUser = await res.json(); // backend থেকে updated user
-
         alert("User unsuspended successfully");
-
         fetchUsers();
-
-        // ================== Update AuthContext if current user ==================
-        if (updatedUser.uid === user?.uid) {
-            setUser(updatedUser);
-        }
     };
-
 
     return (
         <div className="p-6">
             <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
 
-            {/* ================= User Table ================= */}
             <div className="overflow-x-auto bg-white shadow rounded">
                 <table className="min-w-full">
                     <thead className="bg-gray-100">
@@ -108,51 +108,26 @@ const ManageUsers = () => {
                             <th className="p-3 text-left">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {users.map((u) => (
                             <tr key={u._id} className="border-t">
                                 <td className="p-3">{u.name}</td>
                                 <td className="p-3">{u.email}</td>
                                 <td className="p-3 capitalize">{u.role}</td>
-
-                                {/* Status badge */}
                                 <td className="p-3">
-                                    <span
-                                        className={`px-2 py-1 rounded text-xs font-semibold ${u.status === "suspended"
-                                            ? "bg-red-100 text-red-600"
-                                            : "bg-green-100 text-green-600"
-                                            }`}
-                                    >
+                                    <span className={`px-2 py-1 rounded text-xs font-semibold ${u.status === "suspended" ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
                                         {u.status || "active"}
                                     </span>
                                 </td>
-
-                                {/* Actions */}
                                 <td className="p-3 flex gap-2">
-                                    {/* Role update */}
-                                    <button
-                                        onClick={() => handleOpenModal(u)}
-                                        className="bg-blue-500 text-white px-3 py-1 rounded"
-                                    >
+                                    <button onClick={() => handleOpenModal(u)} className="bg-blue-500 text-white px-3 py-1 rounded">
                                         Update
                                     </button>
-
-                                    {/* Suspend / Unsuspend toggle */}
                                     <button
-                                        onClick={() =>
-                                            u.status === "suspended"
-                                                ? handleUnsuspend(u._id)
-                                                : setSuspendId(u._id)
-                                        }
-                                        className={`px-3 py-1 rounded text-white ${u.status === "suspended"
-                                            ? "bg-green-500"
-                                            : "bg-red-500"
-                                            }`}
+                                        onClick={() => u.status === "suspended" ? handleUnsuspend(u._id) : setSuspendId(u._id)}
+                                        className={`px-3 py-1 rounded text-white ${u.status === "suspended" ? "bg-green-500" : "bg-red-500"}`}
                                     >
-                                        {u.status === "suspended"
-                                            ? "Unsuspend"
-                                            : "Suspend"}
+                                        {u.status === "suspended" ? "Unsuspend" : "Suspend"}
                                     </button>
                                 </td>
                             </tr>
@@ -161,73 +136,34 @@ const ManageUsers = () => {
                 </table>
             </div>
 
-            {/* ================= Role Update Modal ================= */}
+            {/* Role Update Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
                     <div className="bg-white p-6 rounded w-80">
                         <h3 className="font-semibold mb-3">Update Role</h3>
-
-                        <select
-                            value={newRole}
-                            onChange={(e) => setNewRole(e.target.value)}
-                            className="w-full border p-2 mb-4"
-                        >
+                        <select value={newRole} onChange={(e) => setNewRole(e.target.value)} className="w-full border p-2 mb-4">
                             <option value="admin">Admin</option>
                             <option value="manager">Manager</option>
                             <option value="buyer">Buyer</option>
                         </select>
-
                         <div className="flex justify-end gap-2">
-                            <button
-                                onClick={handleModalSubmit}
-                                className="bg-green-500 text-white px-3 py-1 rounded"
-                            >
-                                Save
-                            </button>
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="bg-gray-300 px-3 py-1 rounded"
-                            >
-                                Cancel
-                            </button>
+                            <button onClick={handleModalSubmit} className="bg-green-500 text-white px-3 py-1 rounded">Save</button>
+                            <button onClick={() => setShowModal(false)} className="bg-gray-300 px-3 py-1 rounded">Cancel</button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* ================= Suspend Modal ================= */}
+            {/* Suspend Modal */}
             {suspendId && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
                     <div className="bg-white p-6 rounded w-80">
                         <h3 className="font-semibold mb-3">Suspend User</h3>
-
-                        <input
-                            placeholder="Reason"
-                            value={suspendReason}
-                            onChange={(e) => setSuspendReason(e.target.value)}
-                            className="w-full border p-2 mb-2"
-                        />
-
-                        <textarea
-                            placeholder="Feedback"
-                            value={suspendFeedback}
-                            onChange={(e) => setSuspendFeedback(e.target.value)}
-                            className="w-full border p-2 mb-4"
-                        />
-
+                        <input placeholder="Reason" value={suspendReason} onChange={(e) => setSuspendReason(e.target.value)} className="w-full border p-2 mb-2" />
+                        <textarea placeholder="Feedback" value={suspendFeedback} onChange={(e) => setSuspendFeedback(e.target.value)} className="w-full border p-2 mb-4" />
                         <div className="flex justify-end gap-2">
-                            <button
-                                onClick={handleSuspend}
-                                className="bg-red-500 text-white px-3 py-1 rounded"
-                            >
-                                Submit
-                            </button>
-                            <button
-                                onClick={() => setSuspendId(null)}
-                                className="bg-gray-300 px-3 py-1 rounded"
-                            >
-                                Cancel
-                            </button>
+                            <button onClick={handleSuspend} className="bg-red-500 text-white px-3 py-1 rounded">Submit</button>
+                            <button onClick={() => setSuspendId(null)} className="bg-gray-300 px-3 py-1 rounded">Cancel</button>
                         </div>
                     </div>
                 </div>

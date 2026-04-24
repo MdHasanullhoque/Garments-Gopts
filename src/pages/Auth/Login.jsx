@@ -34,7 +34,7 @@ const Login = () => {
             };
 
             // Sync to backend MongoDB
-            const syncRes = await fetch("https://server-gopts.vercel.app/users/sync", {
+            const syncRes = await fetch("http://localhost:3000/users/sync", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(currentUser)
@@ -42,7 +42,12 @@ const Login = () => {
 
             if (!syncRes.ok) throw new Error("User sync failed");
 
-            setUser(currentUser);
+            const dbUser = await syncRes.json();
+            setUser({
+                ...currentUser,
+                role: dbUser.role,       // DB থেকে actual role
+                status: dbUser.status    // DB থেকে actual status
+            });
             navigate("/");
 
         } catch (err) {
@@ -68,7 +73,7 @@ const Login = () => {
             };
 
             // Sync to backend MongoDB
-            const syncRes = await fetch("https://server-gopts.vercel.app/users/sync", {
+            const syncRes = await fetch("http://localhost:3000/users/sync", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(currentUser)
@@ -76,7 +81,12 @@ const Login = () => {
 
             if (!syncRes.ok) throw new Error("User sync failed");
 
-            setUser(currentUser);
+            const dbUser = await syncRes.json();
+            setUser({
+                ...currentUser,
+                role: dbUser.role,       // DB থেকে actual role
+                status: dbUser.status    // DB থেকে actual status
+            });
             navigate("/");
 
         } catch (err) {
