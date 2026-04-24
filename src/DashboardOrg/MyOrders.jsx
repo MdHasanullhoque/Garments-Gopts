@@ -34,7 +34,7 @@ const MyOrders = () => {
 
             {/* Desktop Table */}
             <div className="hidden md:block overflow-x-auto mb-4">
-                <table className="min-w-full border border-gray-300">
+                {/* <table className="min-w-full border border-gray-300">
                     <thead className="bg-gray-100">
                         <tr>
                             <th className="px-4 py-2 border">Product</th>
@@ -53,7 +53,40 @@ const MyOrders = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </table> */}
+
+
+                <thead className="bg-gray-100">
+                    <tr>
+                        <th className="px-4 py-2 border">Order ID</th>
+                        <th className="px-4 py-2 border">Product</th>
+                        <th className="px-4 py-2 border">Quantity</th>
+                        <th className="px-4 py-2 border">Total Price</th>
+                        <th className="px-4 py-2 border">Status</th>
+                        <th className="px-4 py-2 border">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {orders.map(o => (
+                        <tr key={o._id} className="text-center border-t">
+                            <td className="px-4 py-2 border text-xs">{o._id}</td>
+                            <td className="px-4 py-2 border">{o.productTitle}</td>
+                            <td className="px-4 py-2 border">{o.quantity}</td>
+                            <td className="px-4 py-2 border">${o.orderPrice}</td>
+                            <td className="px-4 py-2 border">{o.status}</td>
+                            <td className="px-4 py-2 border">
+                                <button
+                                    onClick={() => navigator.clipboard.writeText(o._id)}
+                                    className="btn btn-xs btn-outline"
+                                >
+                                    Copy ID
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+
+
             </div>
 
             {/* Mobile Cards */}
