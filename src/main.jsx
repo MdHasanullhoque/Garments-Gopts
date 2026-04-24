@@ -6,6 +6,10 @@ import './index.css';
 import { router } from './Routes/router.jsx';
 import AuthProvider from './context/AuthProvider';
 
+// Load saved theme
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>

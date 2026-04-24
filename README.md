@@ -1,16 +1,50 @@
-# React + Vite
+# Garments Order & Production Tracker System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Purpose
+A web-based platform for small and medium garment factories to manage production workflow, track orders from buyers, manage production stages, monitor inventory, and ensure timely delivery.
 
-Currently, two official plugins are available:
+## Live URL
+🌐 [https://dbhopegopts.netlify.app](https://dbhopegopts.netlify.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Server URL
+🔗 [https://server-gopts-bzds.vercel.app](https://server-gopts-bzds.vercel.app)
 
-## React Compiler
+## Key Features
+- Role-based authentication (Admin, Manager, Buyer)
+- Product management (add, update, delete, show on home)
+- Order booking and tracking system
+- Admin dashboard (manage users, products, orders)
+- Manager dashboard (add products, approve/reject orders)
+- Buyer dashboard (my orders, track order, cancel order)
+- Suspend/unsuspend users with reason and feedback
+- Show/hide products on home page
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Admin Credentials
+- Email: (your admin email)
+- Password: (your admin password)
 
-## Expanding the ESLint configuration
+## Manager Credentials
+- Email: (your manager email)
+- Password: (your manager password)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## NPM Packages Used
+### Client
+- react
+- react-dom
+- react-router-dom
+- firebase
+- axios
+- tailwindcss
+- daisyui
+- framer-motion
+
+### Server
+- express
+- mongoose
+- cors
+- dotenv
+- nodemon
+
+## GitHub Repositories
+- Client: [https://github.com/MdHasanullhoque/Garments-Gopts](https://github.com/MdHasanullhoque/Garments-Gopts)
+- Server: [https://github.com/MdHasanullhoque/Server-Gopts](https://github.com/MdHasanullhoque/Server-Gopts)
