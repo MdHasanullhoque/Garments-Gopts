@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
@@ -18,20 +15,16 @@ const Register = () => {
         const password = e.target.password.value;
         const photoURL = e.target.photo.value;
         const role = e.target.role.value;
-        const status = "pending";
+        const status = "approved";
 
-        // Password validation
         if (!/[A-Z]/.test(password)) return setError("Password must contain at least one uppercase letter");
         if (!/[a-z]/.test(password)) return setError("Password must contain at least one lowercase letter");
         if (password.length < 6) return setError("Password must be at least 6 characters long");
 
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password);
-
-            // Update displayName & photoURL
             await updateProfile(res.user, { displayName: name, photoURL });
 
-            // Sync to backend MongoDB
             const currentUser = {
                 uid: res.user.uid,
                 name,
@@ -41,13 +34,15 @@ const Register = () => {
                 status
             };
 
-            const syncRes = await fetch("https://server-gopts-bzds.vercel.app/users/sync", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(currentUser)
-            });
-
-            if (!syncRes.ok) throw new Error("User sync failed");
+            try {
+                await fetch("https://server-gopts-bzds.vercel.app/users/sync", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(currentUser)
+                });
+            } catch (syncErr) {
+                console.error("Sync failed:", syncErr);
+            }
 
             navigate("/");
 
@@ -64,15 +59,11 @@ const Register = () => {
                 <input type="email" name="email" placeholder="Email" className="input input-bordered w-full mb-3" required />
                 <input type="password" name="password" placeholder="Password" className="input input-bordered w-full mb-3" required />
                 <input type="text" name="photo" placeholder="Photo URL" className="input input-bordered w-full mb-3" />
-
-                {/* Role dropdown */}
                 <select name="role" className="input input-bordered w-full mb-3">
                     <option value="buyer">Buyer</option>
                     <option value="manager">Manager</option>
                 </select>
-
                 {error && <p className="text-red-500">{error}</p>}
-
                 <button className="btn btn-primary w-full mt-2">Register</button>
                 <p className="mt-2">Already have an account? <Link to="/login" className="text-blue-500">Login</Link></p>
             </form>
